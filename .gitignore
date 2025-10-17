@@ -1,0 +1,96 @@
+# 操作系统生成的文件
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+Desktop.ini
+
+# Windows文件
+$RECYCLE.BIN/
+*.lnk
+
+# 编辑器和IDE
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+*.swp
+*.swo
+*~
+.project
+.classpath
+.settings/
+*.iml
+
+# 临时文件
+*.log
+*.tmp
+*.temp
+*.cache
+*.bak
+*.backup
+
+# Node.js相关（如果未来需要）
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+yarn.lock
+
+# 打包文件
+*.zip
+*.rar
+*.7z
+*.tar
+*.tar.gz
+
+# 测试覆盖率报告
+coverage/
+.nyc_output/
+
+# 环境变量文件
+.env
+.env.local
+.env.*.local
+
+# 构建输出（如果未来有构建流程）
+dist/
+build/
+out/
+
+# 浏览器扩展打包文件
+*.crx
+*.xpi
+web-ext-artifacts/
+
+# 文档生成
+docs/_build/
+
+# 备份和草稿
+*_backup.*
+*_draft.*
+*.orig
+
+# 私密或敏感信息
+secrets/
+private/
+.secrets
+
+# 系统和调试
+.sass-cache/
+*.pid
+*.seed
+*.pid.lock
+.npm
+.eslintcache
+
+# 其他
+*.diff
+*.patch
+*.err
+.pnpm-debug.log*
+
