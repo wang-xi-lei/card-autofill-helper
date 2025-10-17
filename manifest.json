@@ -1,0 +1,28 @@
+{
+  "manifest_version": 3,
+  "name": "银行卡自动填充助手",
+  "version": "2.0.0",
+  "description": "自动生成并填充银行卡、地址等表单信息（使用Luhn算法验证）",
+  "permissions": [
+    "activeTab",
+    "scripting",
+    "storage"
+  ],
+  "host_permissions": [
+    "https://*/*",
+    "http://*/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "银行卡自动填充助手"
+  },
+  "icons": {
+    "16": "icon.png",
+    "48": "icon.png",
+    "128": "icon.png"
+  }
+}
+

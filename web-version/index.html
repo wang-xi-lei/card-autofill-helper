@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>测试卡号生成器</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #f0f2f5;
+      padding: 30px 20px;
+      color: #333;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      overflow: hidden;
+    }
+
+    .header {
+      padding: 25px 30px;
+      border-bottom: 1px solid #e8e8e8;
+    }
+
+    .header h1 {
+      font-size: 20px;
+      font-weight: 600;
+      color: #2c3e50;
+    }
+
+    .main {
+      display: grid;
+      grid-template-columns: 380px 1fr;
+      min-height: 600px;
+    }
+
+    /* 左侧配置区 */
+    .config-panel {
+      background: #fafbfc;
+      border-right: 1px solid #e8e8e8;
+      padding: 30px;
+    }
+
+    .panel-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: #2c3e50;
+      margin-bottom: 25px;
+      padding-bottom: 15px;
+      border-bottom: 2px solid #e8e8e8;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      color: #555;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .form-input, .form-select {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid #d1d5db;
+      border-radius: 6px;
+      font-size: 14px;
+      background: white;
+      transition: all 0.2s;
+    }
+
+    .form-input:focus, .form-select:focus {
+      outline: none;
+      border-color: #10b981;
+      box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+    }
+
+    .form-select {
+      cursor: pointer;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23666' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+      padding-right: 35px;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    /* 开关控件 */
+    .switch-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 44px;
+      height: 24px;
+    }
+
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #d1d5db;
+      transition: 0.3s;
+      border-radius: 24px;
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 18px;
+      width: 18px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: 0.3s;
+      border-radius: 50%;
+    }
+
+    input:checked + .slider {
+      background-color: #10b981;
+    }
+
+    input:checked + .slider:before {
+      transform: translateX(20px);
+    }
+
+    .switch-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: #555;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* 生成按钮 */
+    .btn-generate {
+      width: 100%;
+      padding: 12px 20px;
+      background: #10b981;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      margin-top: 25px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .btn-generate:hover {
+      background: #059669;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+    }
+
+    .btn-generate:active {
+      transform: translateY(0);
+    }
+
+    /* 右侧结果区 */
+    .result-panel {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .tabs {
+      display: flex;
+      border-bottom: 1px solid #e8e8e8;
+      background: #fafbfc;
+    }
+
+    .tab {
+      padding: 15px 30px;
+      font-size: 14px;
+      font-weight: 500;
+      color: #6b7280;
+      background: transparent;
+      border: none;
+      border-bottom: 2px solid transparent;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .tab:hover {
+      color: #10b981;
+      background: rgba(16, 185, 129, 0.05);
+    }
+
+    .tab.active {
+      color: #10b981;
+      border-bottom-color: #10b981;
+      background: white;
+    }
+
+    .tab-content {
+      flex: 1;
+      padding: 25px 30px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .result-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+
+    .result-stats {
+      display: flex;
+      gap: 15px;
+      font-size: 13px;
+    }
+
+    .stat-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: #6b7280;
+    }
+
+    .stat-value {
+      font-weight: 600;
+      color: #10b981;
+    }
+
+    .result-output {
+      flex: 1;
+      background: #f9fafb;
+      border: 1px solid #e5e7eb;
+      border-radius: 6px;
+      padding: 20px;
+      font-family: 'Courier New', monospace;
+      font-size: 13px;
+      line-height: 1.8;
+      overflow-y: auto;
+      white-space: pre;
+      color: #374151;
+      min-height: 400px;
+    }
+
+    .result-output:empty::before {
+      content: '点击左侧"生成"按钮开始...';
+      color: #9ca3af;
+      font-style: italic;
+    }
+
+    .result-actions {
+      display: flex;
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    .btn {
+      padding: 10px 24px;
+      border: 1px solid #d1d5db;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+      background: white;
+      color: #374151;
+    }
+
+    .btn:hover {
+      border-color: #10b981;
+      color: #10b981;
+      background: rgba(16, 185, 129, 0.05);
+    }
+
+    .btn-primary {
+      background: #10b981;
+      color: white;
+      border-color: #10b981;
+    }
+
+    .btn-primary:hover {
+      background: #059669;
+      color: white;
+    }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: white;
+      padding: 16px 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      border-left: 4px solid #10b981;
+      z-index: 1000;
+      animation: slideIn 0.3s ease-out;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .toast.error {
+      border-left-color: #ef4444;
+    }
+
+    @keyframes slideIn {
+      from {
+        transform: translateX(400px);
+        opacity: 0;
+      }
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    @media (max-width: 768px) {
+      body {
+        padding: 0;
+      }
+
+      .container {
+        border-radius: 0;
+      }
+
+      .main {
+        grid-template-columns: 1fr;
+      }
+
+      .config-panel {
+        border-right: none;
+        border-bottom: 1px solid #e8e8e8;
+      }
+
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #f1f1f1;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #d1d5db;
+      border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: #9ca3af;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>💳 测试卡号生成器</h1>
+    </div>
+
+    <div class="main">
+      <!-- 左侧配置面板 -->
+      <div class="config-panel">
+        <div class="panel-title">基础配置</div>
+
+        <div class="form-group">
+          <label class="form-label">选择 BIN</label>
+          <select class="form-select" id="binSelect" onchange="updateBinFromSelect()">
+            <option value="">-- 选择预设 BIN --</option>
+            <option value="559888">559888</option>
+            <option value="421769">421769 - Visa</option>
+            <option value="532925">532925 - MasterCard</option>
+            <option value="378282">378282 - Amex</option>
+            <option value="601111">601111 - Discover</option>
+            <option value="352800">352800 - JCB</option>
+            <option value="300000">300000 - Diners</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">自定义 BIN（优先）</label>
+          <input type="text" class="form-input" id="binInput" placeholder="输入4-8位数字" maxlength="8">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">输出格式</label>
+          <select class="form-select" id="formatSelect">
+            <option value="PIPE">PIPE ( | )</option>
+            <option value="CSV">CSV ( , )</option>
+            <option value="JSON">JSON</option>
+            <option value="XML">XML</option>
+          </select>
+        </div>
+
+        <div class="switch-group">
+          <label class="switch">
+            <input type="checkbox" id="dateSwitch" checked>
+            <span class="slider"></span>
+          </label>
+          <span class="switch-label">日期</span>
+        </div>
+
+        <div class="form-row" id="dateFields">
+          <div class="form-group">
+            <label class="form-label">有效期月份</label>
+            <select class="form-select" id="expiryMonth">
+              <option value="Random">随机</option>
+              <option value="01">01</option>
+              <option value="02">02</option>
+              <option value="03">03</option>
+              <option value="04">04</option>
+              <option value="05">05</option>
+              <option value="06">06</option>
+              <option value="07">07</option>
+              <option value="08">08</option>
+              <option value="09">09</option>
+              <option value="10">10</option>
+              <option value="11">11</option>
+              <option value="12">12</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">有效期年份</label>
+            <select class="form-select" id="expiryYear">
+              <option value="Random">随机</option>
+              <option value="2025">2025</option>
+              <option value="2026">2026</option>
+              <option value="2027">2027</option>
+              <option value="2028">2028</option>
+              <option value="2029">2029</option>
+              <option value="2030">2030</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="switch-group">
+          <label class="switch">
+            <input type="checkbox" id="cvvSwitch" checked>
+            <span class="slider"></span>
+          </label>
+          <span class="switch-label">安全码</span>
+        </div>
+
+        <div class="form-group" id="cvvField">
+          <label class="form-label">CVV 安全码</label>
+          <input type="text" class="form-input" id="cvvInput" placeholder="留空则随机生成">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">生成数量</label>
+          <select class="form-select" id="quantity">
+            <option value="10" selected>10</option>
+            <option value="20">20</option>
+            <option value="50">50</option>
+            <option value="100">100</option>
+            <option value="200">200</option>
+            <option value="500">500</option>
+          </select>
+        </div>
+
+        <button class="btn-generate" onclick="generate()">
+          <span>⚙️</span> 生成
+        </button>
+      </div>
+
+      <!-- 右侧结果面板 -->
+      <div class="result-panel">
+        <div class="tabs">
+          <button class="tab active" onclick="switchTab('basic')">基础</button>
+          <button class="tab" onclick="switchTab('advance')">高级</button>
+        </div>
+
+        <div class="tab-content">
+          <div class="result-header">
+            <div class="result-stats hidden" id="stats">
+              <div class="stat-item">
+                <span>📊</span>
+                <span class="stat-value" id="statCount">0</span>
+                <span>个</span>
+              </div>
+              <div class="stat-item">
+                <span>💳</span>
+                <span class="stat-value" id="statBrand">-</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="result-output" id="output"></div>
+
+          <div class="result-actions">
+            <button class="btn btn-primary" onclick="copyAll()">📋 复制</button>
+            <button class="btn" onclick="downloadTxt()">💾 下载</button>
+            <button class="btn" onclick="resetAll()">🔄 重置</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ============= Luhn 算法 =============
+    
+    function calculateLuhn(num) {
+      let sum = 0;
+      let isDouble = true;
+      for (let i = num.length - 1; i >= 0; i--) {
+        let digit = parseInt(num[i]);
+        if (isDouble) {
+          digit *= 2;
+          if (digit > 9) digit -= 9;
+        }
+        sum += digit;
+        isDouble = !isDouble;
+      }
+      return ((10 - (sum % 10)) % 10).toString();
+    }
+
+    function isValidLuhn(num) {
+      let sum = 0;
+      let isDouble = false;
+      for (let i = num.length - 1; i >= 0; i--) {
+        let digit = parseInt(num[i]);
+        if (isDouble) {
+          digit *= 2;
+          if (digit > 9) digit -= 9;
+        }
+        sum += digit;
+        isDouble = !isDouble;
+      }
+      return sum % 10 === 0;
+    }
+
+    // ============= 卡品牌识别 =============
+    
+    function detectBrand(bin) {
+      const b = bin.toString();
+      if (b.startsWith('4')) return { name: 'VISA', len: 16, cvv: 3 };
+      if (/^5[1-5]/.test(b)) return { name: 'MasterCard', len: 16, cvv: 3 };
+      if (b.startsWith('2')) {
+        const n = parseInt(b.slice(0, 4));
+        if (n >= 2221 && n <= 2720) return { name: 'MasterCard', len: 16, cvv: 3 };
+      }
+      if (b.startsWith('34') || b.startsWith('37')) return { name: 'Amex', len: 15, cvv: 4 };
+      if (b.startsWith('6011') || /^64[4-9]/.test(b) || b.startsWith('65')) return { name: 'Discover', len: 16, cvv: 3 };
+      if (/^35[2-8]/.test(b)) return { name: 'JCB', len: 16, cvv: 3 };
+      if (b.startsWith('36') || b.startsWith('38') || b.startsWith('30')) return { name: 'Diners', len: 14, cvv: 3 };
+      return { name: 'Unknown', len: 16, cvv: 3 };
+    }
+
+    // ============= 生成卡号 =============
+    
+    function generateCard(bin, customCvv, customMonth, customYear) {
+      const cleanBin = bin.replace(/x/gi, '').replace(/\D/g, '');
+      if (cleanBin.length < 4) {
+        throw new Error('BIN 长度至少需要 4 位数字');
+      }
+
+      const brand = detectBrand(cleanBin);
+      const needed = brand.len - cleanBin.length - 1;
+      
+      if (needed < 1) {
+        throw new Error('BIN 长度过长，无法生成有效卡号');
+      }
+
+      let num = cleanBin;
+      for (let i = 0; i < needed; i++) {
+        num += Math.floor(Math.random() * 10);
+      }
+      
+      num += calculateLuhn(num);
+
+      if (!isValidLuhn(num)) {
+        throw new Error('Luhn 校验失败');
+      }
+
+      // 生成有效期
+      let month, year;
+      if (customMonth === 'Random') {
+        month = String(Math.floor(Math.random() * 12) + 1).padStart(2, '0');
+      } else {
+        month = customMonth;
+      }
+
+      if (customYear === 'Random') {
+        const now = new Date();
+        const currentYear = now.getFullYear();
+        year = String(currentYear + Math.floor(Math.random() * 3) + 3);
+      } else {
+        year = customYear;
+      }
+
+      // 生成 CVV
+      let cvv;
+      if (customCvv) {
+        cvv = customCvv;
+      } else {
+        if (brand.cvv === 4) {
+          cvv = String(Math.floor(Math.random() * 9000) + 1000);
+        } else {
+          cvv = String(Math.floor(Math.random() * 900) + 100);
+        }
+      }
+
+      return {
+        number: num,
+        month: month,
+        year: year,
+        cvv: cvv,
+        brand: brand.name
+      };
+    }
+
+    // ============= UI 交互 =============
+    
+    let generatedCards = [];
+
+    function switchTab(tab) {
+      // 更新标签状态
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      event.target.classList.add('active');
+    }
+
+    function formatOutput(cards, format) {
+      if (format === 'PIPE') {
+        return cards.map(c => `${c.number}|${c.month}|${c.year}|${c.cvv}`).join('\n');
+      } else if (format === 'CSV') {
+        let result = 'Card Number,Month,Year,CVV\n';
+        result += cards.map(c => `${c.number},${c.month},${c.year},${c.cvv}`).join('\n');
+        return result;
+      } else if (format === 'JSON') {
+        return JSON.stringify(cards, null, 2);
+      } else if (format === 'XML') {
+        let result = '<?xml version="1.0" encoding="UTF-8"?>\n<cards>\n';
+        cards.forEach(c => {
+          result += `  <card>\n`;
+          result += `    <number>${c.number}</number>\n`;
+          result += `    <month>${c.month}</month>\n`;
+          result += `    <year>${c.year}</year>\n`;
+          result += `    <cvv>${c.cvv}</cvv>\n`;
+          result += `  </card>\n`;
+        });
+        result += '</cards>';
+        return result;
+      }
+      return '';
+    }
+
+    function generate() {
+      try {
+        const customBin = document.getElementById('binInput').value.trim();
+        const selectedBin = document.getElementById('binSelect').value;
+        const bin = customBin || selectedBin;
+        
+        const format = document.getElementById('formatSelect').value;
+        const quantity = parseInt(document.getElementById('quantity').value);
+        const includeDate = document.getElementById('dateSwitch').checked;
+        const includeCvv = document.getElementById('cvvSwitch').checked;
+        const customCvv = document.getElementById('cvvInput').value.trim();
+        const customMonth = document.getElementById('expiryMonth').value;
+        const customYear = document.getElementById('expiryYear').value;
+
+        if (!bin) {
+          throw new Error('请选择或输入 BIN');
+        }
+
+        const cards = [];
+        for (let i = 0; i < quantity; i++) {
+          try {
+            const card = generateCard(bin, customCvv, customMonth, customYear);
+            cards.push(card);
+          } catch (e) {
+            // 跳过失败的
+          }
+        }
+
+        if (cards.length === 0) {
+          throw new Error('生成失败，请检查 BIN 设置');
+        }
+
+        generatedCards = cards;
+
+        // 格式化输出
+        const output = formatOutput(cards, format);
+        document.getElementById('output').textContent = output;
+
+        // 显示统计
+        const stats = document.getElementById('stats');
+        stats.classList.remove('hidden');
+        document.getElementById('statCount').textContent = cards.length;
+        document.getElementById('statBrand').textContent = cards[0].brand;
+
+        toast(`✓ 成功生成 ${cards.length} 个卡号`, 'success');
+      } catch (e) {
+        toast(e.message, 'error');
+      }
+    }
+
+    function copyAll() {
+      const text = document.getElementById('output').textContent;
+      if (!text) {
+        toast('✗ 没有可复制的内容', 'error');
+        return;
+      }
+      copy(text);
+      toast('✓ 已复制到剪贴板', 'success');
+    }
+
+    function downloadTxt() {
+      const text = document.getElementById('output').textContent;
+      if (!text) {
+        toast('✗ 没有可下载的内容', 'error');
+        return;
+      }
+      const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `test-cards-${Date.now()}.txt`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      toast('✓ 文件已下载', 'success');
+    }
+
+    function resetAll() {
+      generatedCards = [];
+      document.getElementById('output').textContent = '';
+      document.getElementById('stats').classList.add('hidden');
+      toast('✓ 已重置', 'success');
+    }
+
+    function copy(text) {
+      const textarea = document.createElement('textarea');
+      textarea.value = text;
+      textarea.style.position = 'fixed';
+      textarea.style.opacity = '0';
+      document.body.appendChild(textarea);
+      textarea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textarea);
+    }
+
+    function toast(msg, type = 'success') {
+      const existing = document.querySelector('.toast');
+      if (existing) existing.remove();
+
+      const div = document.createElement('div');
+      div.className = `toast ${type}`;
+      div.innerHTML = `<span>${msg}</span>`;
+      document.body.appendChild(div);
+
+      setTimeout(() => div.remove(), 2500);
+    }
+
+    // 从下拉选择更新BIN输入框
+    function updateBinFromSelect() {
+      const selected = document.getElementById('binSelect').value;
+      if (selected) {
+        document.getElementById('binInput').value = '';
+      }
+    }
+
+    // 开关控制
+    document.getElementById('dateSwitch').addEventListener('change', (e) => {
+      document.getElementById('dateFields').style.display = e.target.checked ? 'grid' : 'none';
+    });
+
+    document.getElementById('cvvSwitch').addEventListener('change', (e) => {
+      document.getElementById('cvvField').style.display = e.target.checked ? 'block' : 'none';
+    });
+
+    // 回车生成
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' && e.target.id === 'binInput') {
+        generate();
+      }
+    });
+  </script>
+</body>
+</html>

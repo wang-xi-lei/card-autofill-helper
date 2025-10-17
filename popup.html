@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>银行卡自动填充助手</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+
+<body>
+  <div class="container">
+    <h2>💳 银行卡自动填充助手</h2>
+    
+    <div class="test-mode-badge">
+      🧪 开发测试模式
+    </div>
+
+    <div class="content">
+      <!-- BIN选择区域 -->
+      <div class="bin-selector">
+        <div class="bin-row">
+          <div class="bin-column bin-column-select">
+            <label for="binSelect">选择BIN：</label>
+            <select id="binSelect" class="select-box">
+              <option value="559888">559888</option>
+              <option value="424242">424242</option>
+              <option value="555555">555555</option>
+              
+              <!-- Visa (4开头) -->
+              <option value="400000">400000</option>
+              <option value="401200">401200</option>
+              <option value="402400">402400</option>
+              <option value="403600">403600</option>
+              <option value="404800">404800</option>
+              <option value="406000">406000</option>
+              <option value="407200">407200</option>
+              <option value="408400">408400</option>
+              <option value="409600">409600</option>
+              <option value="410800">410800</option>
+              <option value="411111">411111</option>
+              <option value="412000">412000</option>
+              <option value="413200">413200</option>
+              <option value="414400">414400</option>
+              <option value="415600">415600</option>
+              <option value="416800">416800</option>
+              <option value="418000">418000</option>
+              <option value="419200">419200</option>
+              <option value="420400">420400</option>
+              <option value="421600">421600</option>
+              <option value="421769">421769</option>
+              <option value="422800">422800</option>
+              <option value="424000">424000</option>
+              <option value="425200">425200</option>
+              <option value="426400">426400</option>
+              <option value="427600">427600</option>
+              <option value="428800">428800</option>
+              <option value="430000">430000</option>
+              <option value="431200">431200</option>
+              <option value="432400">432400</option>
+              <option value="433600">433600</option>
+              <option value="434800">434800</option>
+              <option value="436000">436000</option>
+              <option value="437200">437200</option>
+              <option value="438400">438400</option>
+              <option value="439600">439600</option>
+              <option value="440800">440800</option>
+              <option value="442000">442000</option>
+              <option value="443200">443200</option>
+              <option value="444400">444400</option>
+              <option value="445600">445600</option>
+              <option value="446800">446800</option>
+              <option value="448000">448000</option>
+              <option value="449200">449200</option>
+              <option value="450400">450400</option>
+              <option value="451600">451600</option>
+              <option value="452800">452800</option>
+              <option value="454000">454000</option>
+              <option value="455200">455200</option>
+              <option value="456400">456400</option>
+              <option value="457600">457600</option>
+              <option value="458800">458800</option>
+              <option value="460000">460000</option>
+              <option value="461200">461200</option>
+              <option value="462400">462400</option>
+              <option value="463600">463600</option>
+              <option value="464800">464800</option>
+              <option value="466000">466000</option>
+              <option value="467200">467200</option>
+              <option value="468400">468400</option>
+              <option value="469600">469600</option>
+              <option value="470800">470800</option>
+              <option value="472000">472000</option>
+              <option value="473200">473200</option>
+              <option value="474400">474400</option>
+              <option value="475600">475600</option>
+              <option value="476800">476800</option>
+              <option value="478000">478000</option>
+              <option value="479200">479200</option>
+              <option value="480400">480400</option>
+              <option value="481600">481600</option>
+              <option value="482800">482800</option>
+              <option value="483000">483000</option>
+              <option value="484000">484000</option>
+              <option value="485200">485200</option>
+              <option value="486400">486400</option>
+              <option value="487600">487600</option>
+              <option value="488800">488800</option>
+              <option value="490000">490000</option>
+              <option value="491200">491200</option>
+              <option value="492400">492400</option>
+              <option value="493600">493600</option>
+              <option value="494800">494800</option>
+              <option value="496000">496000</option>
+              <option value="497200">497200</option>
+              <option value="498400">498400</option>
+              <option value="499600">499600</option>
+              
+              <!-- MasterCard (51-55) -->
+              <option value="510000">510000</option>
+              <option value="511111">511111</option>
+              <option value="512000">512000</option>
+              <option value="513000">513000</option>
+              <option value="514000">514000</option>
+              <option value="515000">515000</option>
+              <option value="516000">516000</option>
+              <option value="517000">517000</option>
+              <option value="518000">518000</option>
+              <option value="519000">519000</option>
+              <option value="520000">520000</option>
+              <option value="521000">521000</option>
+              <option value="522000">522000</option>
+              <option value="523000">523000</option>
+              <option value="524000">524000</option>
+              <option value="525000">525000</option>
+              <option value="526000">526000</option>
+              <option value="527000">527000</option>
+              <option value="528000">528000</option>
+              <option value="529000">529000</option>
+              <option value="530000">530000</option>
+              <option value="531000">531000</option>
+              <option value="532000">532000</option>
+              <option value="532925">532925</option>
+              <option value="533000">533000</option>
+              <option value="534000">534000</option>
+              <option value="535000">535000</option>
+              <option value="536000">536000</option>
+              <option value="537000">537000</option>
+              <option value="538000">538000</option>
+              <option value="539000">539000</option>
+              <option value="540000">540000</option>
+              <option value="541000">541000</option>
+              <option value="542000">542000</option>
+              <option value="543000">543000</option>
+              <option value="544000">544000</option>
+              <option value="545000">545000</option>
+              <option value="546000">546000</option>
+              <option value="547000">547000</option>
+              <option value="548000">548000</option>
+              <option value="549000">549000</option>
+              <option value="550000">550000</option>
+              <option value="551000">551000</option>
+              <option value="552000">552000</option>
+              <option value="553000">553000</option>
+              <option value="554000">554000</option>
+              <option value="556000">556000</option>
+              <option value="557000">557000</option>
+              <option value="558000">558000</option>
+              <option value="559000">559000</option>
+              
+              <!-- MasterCard 新段 (2221-2720) -->
+              <option value="222100">222100</option>
+              <option value="223000">223000</option>
+              <option value="224000">224000</option>
+              <option value="225000">225000</option>
+              <option value="226000">226000</option>
+              <option value="227000">227000</option>
+              <option value="228000">228000</option>
+              <option value="229000">229000</option>
+              <option value="230000">230000</option>
+              <option value="235000">235000</option>
+              <option value="240000">240000</option>
+              <option value="245000">245000</option>
+              <option value="250000">250000</option>
+              <option value="255000">255000</option>
+              <option value="260000">260000</option>
+              <option value="265000">265000</option>
+              <option value="270000">270000</option>
+              <option value="271000">271000</option>
+              <option value="272000">272000</option>
+              
+              <!-- American Express (34, 37) -->
+              <option value="340000">340000</option>
+              <option value="341000">341000</option>
+              <option value="342000">342000</option>
+              <option value="343000">343000</option>
+              <option value="344000">344000</option>
+              <option value="345000">345000</option>
+              <option value="346000">346000</option>
+              <option value="347000">347000</option>
+              <option value="348000">348000</option>
+              <option value="349000">349000</option>
+              <option value="370000">370000</option>
+              <option value="371000">371000</option>
+              <option value="371449">371449</option>
+              <option value="372000">372000</option>
+              <option value="373000">373000</option>
+              <option value="374000">374000</option>
+              <option value="375000">375000</option>
+              <option value="376000">376000</option>
+              <option value="377000">377000</option>
+              <option value="378000">378000</option>
+              <option value="378282">378282</option>
+              <option value="379000">379000</option>
+              
+              <!-- Discover (6011, 644-649, 65) -->
+              <option value="601100">601100</option>
+              <option value="601111">601111</option>
+              <option value="644000">644000</option>
+              <option value="645000">645000</option>
+              <option value="646000">646000</option>
+              <option value="647000">647000</option>
+              <option value="648000">648000</option>
+              <option value="649000">649000</option>
+              <option value="650000">650000</option>
+              <option value="651000">651000</option>
+              <option value="652000">652000</option>
+              <option value="653000">653000</option>
+              <option value="654000">654000</option>
+              <option value="655000">655000</option>
+              <option value="656000">656000</option>
+              <option value="657000">657000</option>
+              <option value="658000">658000</option>
+              <option value="659000">659000</option>
+              
+              <!-- JCB (3528-3589) -->
+              <option value="352800">352800</option>
+              <option value="353000">353000</option>
+              <option value="354000">354000</option>
+              <option value="355000">355000</option>
+              <option value="356000">356000</option>
+              <option value="357000">357000</option>
+              <option value="358000">358000</option>
+              <option value="358900">358900</option>
+              
+              <!-- Diners Club (300-305, 36, 38, 309) -->
+              <option value="300000">300000</option>
+              <option value="301000">301000</option>
+              <option value="302000">302000</option>
+              <option value="303000">303000</option>
+              <option value="304000">304000</option>
+              <option value="305000">305000</option>
+              <option value="309000">309000</option>
+              <option value="309500">309500</option>
+              <option value="360000">360000</option>
+              <option value="361000">361000</option>
+              <option value="362000">362000</option>
+              <option value="363000">363000</option>
+              <option value="364000">364000</option>
+              <option value="365000">365000</option>
+              <option value="366000">366000</option>
+              <option value="367000">367000</option>
+              <option value="368000">368000</option>
+              <option value="369000">369000</option>
+              <option value="380000">380000</option>
+              <option value="381000">381000</option>
+              <option value="382000">382000</option>
+              <option value="383000">383000</option>
+              <option value="384000">384000</option>
+              <option value="385000">385000</option>
+              <option value="386000">386000</option>
+              <option value="387000">387000</option>
+              <option value="388000">388000</option>
+              <option value="389000">389000</option>
+            </select>
+          </div>
+
+          <div class="bin-column bin-column-input">
+            <label for="customBinInput">自定义BIN <span class="label-badge">优先</span>：</label>
+            <input 
+              type="text" 
+              id="customBinInput" 
+              class="select-box" 
+              placeholder="输入4-8位数字" 
+              maxlength="10">
+          </div>
+        </div>
+
+        <!-- 算法提示 -->
+        <div class="algorithm-notice">
+          <span class="notice-icon">🔐</span>
+          <span class="notice-text">使用Luhn算法生成有效卡号</span>
+        </div>
+      </div>
+
+      <!-- 操作按钮 -->
+      <button id="fillForm" class="btn btn-primary">
+        <span class="icon">✨</span>
+        自动填入表单
+      </button>
+
+      <button id="goToBindPage" class="btn btn-accent">
+        <span class="icon">🔗</span>
+        前往绑卡页面
+      </button>
+
+      <div class="divider"></div>
+
+      <!-- 批量生成区域 -->
+      <div class="quantity-selector">
+        <label for="quantitySelect">批量生成数量：</label>
+        <select id="quantitySelect" class="select-box">
+          <option value="5">5个</option>
+          <option value="10" selected>10个</option>
+          <option value="20">20个</option>
+          <option value="50">50个</option>
+        </select>
+      </div>
+
+      <button id="generateCards" class="btn btn-secondary">
+        <span class="icon">🎲</span>
+        批量生成卡号
+      </button>
+
+      <!-- 输出区域 -->
+      <div class="card-output">
+        <textarea 
+          id="cardOutput" 
+          class="output-textarea" 
+          placeholder="生成的卡号将显示在这里...&#10;&#10;格式: 卡号|有效期|CVV" 
+          readonly></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- 引入依赖库 -->
+  <script src="public/jq-3.7.1.min.js"></script>
+  <script src="public/faker-5.5.3.min.js"></script>
+  <script src="utils.js"></script>
+  <script src="popup.js"></script>
+</body>
+
+</html>
+
