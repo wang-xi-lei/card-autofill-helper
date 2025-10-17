@@ -22,9 +22,9 @@
 
 ### 1. 智能卡号生成
 - ✅ **Luhn算法验证** - 生成数学上有效的卡号
-- ✅ **多品牌支持** - Visa、MasterCard、Amex、银联等
+- ✅ **多品牌支持** - Visa、MasterCard、Amex、Discover、JCB等
 - ✅ **自定义BIN** - 支持自定义银行识别码
-- ✅ **批量生成** - 一次生成5-50个测试卡号
+- ✅ **批量生成** - 支持批量生成测试卡号
 
 ### 2. 自动表单填充
 - ✅ **一键填充** - 自动填充卡号、有效期、CVV
@@ -33,7 +33,6 @@
 
 ### 3. 测试辅助
 - ✅ **测试模式标识** - 清晰显示当前为测试模式
-- ✅ **官方测试卡** - 内置Stripe等平台的官方测试卡号
 - ✅ **详细日志** - 控制台输出详细操作日志
 
 ---
@@ -44,7 +43,7 @@
 
 1. **克隆或下载项目**
    ```bash
-   git clone https://github.com/yourusername/card-autofill-helper.git
+   git clone https://github.com/wang-xi-lei/card-autofill-helper.git
    cd card-autofill-helper
    ```
 
@@ -70,9 +69,9 @@
 
 ## 📖 使用指南
 
-### 基础操作
+### 浏览器扩展版
 
-#### 1. 生成单个测试卡并填充表单
+#### 1. 自动填充表单
 
 ```
 1. 打开您的支付表单页面
@@ -86,82 +85,28 @@
 
 ```
 1. 点击扩展图标
-2. 选择生成数量（5/10/20/50）
+2. 选择生成数量
 3. 点击"批量生成卡号"
-4. 卡号列表显示在文本框中
-5. 格式: 卡号|有效期|CVV
+4. 格式: 卡号|有效期|CVV
 ```
 
-#### 3. 使用自定义BIN
+### Web独立版
 
-```
-1. 在"自定义BIN"输入框中输入4-8位数字
-2. 自定义BIN优先级高于下拉选择
-3. 点击任何生成按钮
-4. 工具会使用您的自定义BIN
-```
+独立Web版本位于 `web-version/` 文件夹：
 
-### 高级功能
-
-#### BIN选择说明
-
-| BIN前缀 | 卡品牌 | 卡长度 | CVV长度 |
-|---------|--------|--------|---------|
-| 559888 | 自定义 | 16 | 3 |
-| 622126 | 银联 | 16 | 3 |
-| 421769 | Visa | 16 | 3 |
-| 532925 | MasterCard | 16 | 3 |
-| 424242 | Stripe测试(Visa) | 16 | 3 |
-| 555555 | Stripe测试(MC) | 16 | 3 |
-| 378282 | Amex | 15 | 4 |
-
-#### 生成的数据示例
-
-```
-卡号: 5598884005115278
-有效期: 12/28
-CVV: 696
-持卡人: John Doe
-地址: 123 Main St, Apt 4B
-城市: New York
-州: NY
-邮编: 10001
-国家: US
+```bash
+cd web-version
+# 直接打开 index.html 或使用本地服务器
+python -m http.server 8000
 ```
 
----
+**特点：**
+- 无需安装扩展
+- 支持多种输出格式（PIPE/CSV/JSON/XML）
+- 可自定义日期和CVV
+- 支持在线部署
 
-## 🧪 测试场景
-
-### 推荐测试流程
-
-1. **表单验证测试**
-   - 使用本工具生成的卡号
-   - 测试Luhn算法验证
-   - 测试格式验证
-   - 测试错误提示
-
-2. **支付集成测试**
-   - 使用支付处理商官方测试卡
-   - 测试支付成功流程
-   - 测试支付失败处理
-   - 测试3DS验证
-
-3. **UI/UX测试**
-   - 测试不同卡品牌识别
-   - 测试地址自动填充
-   - 测试响应式布局
-
-详细测试指南请查看：[TESTING_GUIDE.md](TESTING_GUIDE.md)
-
----
-
-## 🔧 技术栈
-
-- **Manifest V3** - Chrome扩展最新版本
-- **jQuery 3.7.1** - DOM操作
-- **Faker.js 5.5.3** - 虚假数据生成
-- **Luhn算法** - 卡号校验
+详见：[WEB_VERSION_README.md](WEB_VERSION_README.md)
 
 ---
 
@@ -179,43 +124,24 @@ card-autofill-helper/
 ├── public/
 │   ├── jq-3.7.1.min.js   # jQuery库
 │   └── faker-5.5.3.min.js # Faker.js库
-├── README.md             # 项目说明
+├── web-version/          # Web独立版本
+│   ├── index.html        # 单文件Web应用
+│   ├── README.md         # Web版说明
+│   ├── DEPLOY.md        # 部署指南
+│   └── ...
+├── README.md             # 本文件
 ├── TESTING_GUIDE.md      # 测试指南
 └── CHANGELOG.md          # 更新日志
 ```
 
 ---
 
-## 🛠️ 开发指南
+## 🔧 技术栈
 
-### 本地开发
-
-1. **修改代码**
-   - 编辑相应的文件
-   - 保存更改
-
-2. **重新加载扩展**
-   - Chrome: 在 `chrome://extensions/` 点击刷新按钮
-   - Firefox: 在 `about:debugging` 重新加载
-
-3. **查看日志**
-   - 右键点击扩展图标 > "检查弹出内容"
-   - 打开控制台查看日志
-
-### 添加新的BIN
-
-编辑 `popup.html`:
-
-```html
-<option value="YOUR_BIN">YOUR_BIN (品牌名)</option>
-```
-
-### 修改生成逻辑
-
-编辑 `utils.js` 中的相关函数：
-- `generateCardInfo()` - 卡号生成
-- `validateBin()` - BIN验证
-- `detectCardBrand()` - 卡品牌识别
+- **Manifest V3** - Chrome扩展最新版本
+- **jQuery 3.7.1** - DOM操作
+- **Faker.js 5.5.3** - 虚假数据生成
+- **Luhn算法** - 卡号校验
 
 ---
 
@@ -229,17 +155,6 @@ card-autofill-helper/
 2. 如果结果大于9，减去9
 3. 所有数字求和
 4. 和能被10整除，则有效
-
-### 示例
-
-```
-卡号: 5598 8840 0511 5278
-
-步骤1: 8*2, 2*2, 1*2, 5*2, 0*2, 4*2, 8*2, 8*2, 8*2
-步骤2: 16→7, 4, 2, 10→1, 0, 8, 16→7, 16→7, 16→7
-步骤3: 7+7+4+9+2+5+1+1+0+5+8+4+7+7+7 = 80
-步骤4: 80 % 10 = 0 ✅ 有效
-```
 
 ---
 
@@ -288,26 +203,18 @@ card-autofill-helper/
 
 查看 [CHANGELOG.md](CHANGELOG.md) 了解版本历史。
 
-### 最新版本 (2.0.0)
-
-- ✨ 添加测试模式标识
-- ✨ 新增更多官方测试卡BIN
-- ✨ 改进BIN验证逻辑
-- 🐛 修复批量生成时的错误处理
-- 📚 完善测试文档
-
 ---
 
 ## 📧 联系方式
 
-- **问题反馈**: [GitHub Issues](https://github.com/yourusername/card-autofill-helper/issues)
+- **问题反馈**: [GitHub Issues](https://github.com/wang-xi-lei/card-autofill-helper/issues)
 - **功能建议**: 欢迎提交Issue或PR
 
 ---
 
 ## 📜 许可证
 
-本项目采用 MIT 许可证 - 详见 [LICENSE](LICENSE) 文件
+本项目采用 MIT 许可证
 
 ---
 
@@ -326,4 +233,3 @@ card-autofill-helper/
 ---
 
 **记住：负责任地使用，仅用于合法的开发测试！** 🎯
-
